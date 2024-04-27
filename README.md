@@ -1,6 +1,6 @@
 # Raw Json Exporter
 
-Exports figma data as a single json document with as much as possible of the internal figma data left as-is. The purpose of this plugin is act as a data dump for further processing externally.
+Exports figma data as a single json document with as much as possible of the internal figma data structure left as-is. The purpose of this plugin is act as a data dump for further processing externally.
 
 All variable names be set to `<collectionName>/<variableName>`.
 
