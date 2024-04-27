@@ -1,0 +1,11 @@
+{
+  "name": "Raw Json Exporter",
+  "id": "1365868080931980869",
+  "api": "1.0.0",
+  "main": "dist/index.js",
+  "editorType": ["figma"],
+  "networkAccess": {
+    "allowedDomains": ["none"]
+  },
+  "menu": [{ "name": "Export figma data", "command": "export" }]
+}
