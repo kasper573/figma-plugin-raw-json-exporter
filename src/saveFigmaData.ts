@@ -1,12 +1,11 @@
 import { FigmaData } from "./resolvers/resolveFigmaData";
 
-export async function save(data: FigmaData) {
-  await saveFile({
+export function save(data: FigmaData) {
+  return saveFile({
     filename: "data.json",
     mimeType: "application/json",
     content: JSON.stringify(data),
   });
-  figma.closePlugin();
 }
 
 function saveFile(args: Omit<DownloadArgs, "callbackMessage">) {
