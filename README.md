@@ -2,9 +2,9 @@
 
 Exports figma data as a single json document with as much as possible of the internal figma data left as-is. The purpose of this plugin is act as a data dump for further processing externally.
 
-All variable names be set to its full reference string `<collectionName>/<variableName>`.
+All variable names be set to `<collectionName>/<variableName>`.
 
-All properties bound to a variable in the data set will have its value replaced by its variable reference string.
+All properties bound to a variable in the data set will have its value replaced by a string reference `{<collectionName>/<variableName>}`.
 
 Here's an example json dump:
 
