@@ -19,33 +19,45 @@ function resolveEffectStyle({
 function resolveEffect(effect: Effect): ResolvedEffect {
   switch (effect.type) {
     case "DROP_SHADOW":
-      return serializeBoundObject<Serializable<DropShadowEffect>>(effect, {
-        showShadowBehindNode: null,
-        blendMode: null,
-        visible: null,
-        spread: null,
-        radius: null,
-        type: null,
-        color: null,
-        offset: null,
-      });
+      return serializeBoundObject<Serializable<DropShadowEffect>>(
+        effect,
+        {
+          showShadowBehindNode: null,
+          blendMode: null,
+          visible: null,
+          spread: null,
+          radius: null,
+          type: null,
+          color: null,
+          offset: null,
+        },
+        ["type"]
+      );
     case "INNER_SHADOW":
-      return serializeBoundObject<Serializable<InnerShadowEffect>>(effect, {
-        blendMode: null,
-        visible: null,
-        spread: null,
-        radius: null,
-        type: null,
-        color: null,
-        offset: null,
-      });
+      return serializeBoundObject<Serializable<InnerShadowEffect>>(
+        effect,
+        {
+          blendMode: null,
+          visible: null,
+          spread: null,
+          radius: null,
+          type: null,
+          color: null,
+          offset: null,
+        },
+        ["type"]
+      );
     case "LAYER_BLUR":
     case "BACKGROUND_BLUR":
-      return serializeBoundObject<Serializable<BlurEffect>>(effect, {
-        radius: null,
-        type: null,
-        visible: null,
-      });
+      return serializeBoundObject<Serializable<BlurEffect>>(
+        effect,
+        {
+          radius: null,
+          type: null,
+          visible: null,
+        },
+        ["type"]
+      );
   }
 }
 
