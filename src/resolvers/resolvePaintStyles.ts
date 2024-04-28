@@ -35,43 +35,56 @@ function resolvePaint(paint: Paint): ResolvedPaint {
           blendMode: null,
           opacity: null,
           visible: null,
-        }
+        },
+        ["type"]
       );
 
       return { ...resolved, gradientStops } as unknown as ResolvedPaint;
     }
     case "IMAGE":
-      return serializeBoundObject<Serializable<ImagePaint>>(paint, {
-        imageHash: null,
-        scaleMode: null,
-        type: null,
-        blendMode: null,
-        imageTransform: null,
-        opacity: null,
-        rotation: null,
-        scalingFactor: null,
-        visible: null,
-      });
+      return serializeBoundObject<Serializable<ImagePaint>>(
+        paint,
+        {
+          imageHash: null,
+          scaleMode: null,
+          type: null,
+          blendMode: null,
+          imageTransform: null,
+          opacity: null,
+          rotation: null,
+          scalingFactor: null,
+          visible: null,
+        },
+        ["type"]
+      );
     case "SOLID":
-      return serializeBoundObject<Serializable<SolidPaint>>(paint, {
-        type: null,
-        blendMode: null,
-        opacity: null,
-        visible: null,
-        color: null,
-      });
+      return serializeBoundObject<Serializable<SolidPaint>>(
+        paint,
+        {
+          type: null,
+          blendMode: null,
+          opacity: null,
+          visible: null,
+          color: null,
+        },
+        ["type"]
+      );
     case "VIDEO":
-      return serializeBoundObject<Serializable<VideoPaint>>(paint, {
-        scaleMode: null,
-        type: null,
-        videoHash: null,
-        blendMode: null,
-        opacity: null,
-        rotation: null,
-        scalingFactor: null,
-        videoTransform: null,
-        visible: null,
-      });
+      return serializeBoundObject<Serializable<VideoPaint>>(
+        paint,
+        {
+          scaleMode: null,
+          type: null,
+          videoHash: null,
+          blendMode: null,
+          opacity: null,
+          rotation: null,
+          scalingFactor: null,
+          videoTransform: null,
+          visible: null,
+        },
+        ["type"]
+      );
   }
 }
 

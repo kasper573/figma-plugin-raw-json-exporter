@@ -27,7 +27,7 @@ async function resolveTextStyle(style: TextStyle): Promise<ResolvedTextStyle> {
       fontName: null,
       letterSpacing: null,
     },
-    ["name"]
+    ["name", "type"]
   );
 }
 
