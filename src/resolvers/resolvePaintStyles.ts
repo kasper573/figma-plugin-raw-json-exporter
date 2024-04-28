@@ -22,6 +22,7 @@ async function resolvePaint(paint: Paint): Promise<ResolvedPaint> {
     case "GRADIENT_DIAMOND":
     case "GRADIENT_LINEAR":
     case "GRADIENT_RADIAL": {
+      // TODO fix gradient stops, they don't seem to be exporting anything
       const gradientStops = paint.gradientStops.map((stop) =>
         resolveBoundObject<Serializable<ColorStop>>(stop, {
           color: null,
