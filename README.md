@@ -12,10 +12,12 @@ Here's an example json dump:
 {
   "variables": [
     {
-      "name": "Reference/Color/Blue/50",
-      "type": "COLOR",
+      "id": "VariableID:5:14",
+      "name": "Color/Blue/50",
+      "collection": "Reference",
       "valuesByMode": {
         "Mode 1": {
+          "type": "rgba",
           "r": 0.9607843160629272,
           "g": 0.9803921580314636,
           "b": 0.9960784316062927,
@@ -24,11 +26,12 @@ Here's an example json dump:
       }
     },
     {
-      "name": "Theme/Color/Primary/Base/Light",
-      "type": "COLOR",
+      "id": "VariableID:5:76",
+      "name": "Color/Primary/Base/Light",
+      "collection": "Theme",
       "valuesByMode": {
-        "Light": "{Reference/Color/Blue/600}",
-        "Dark": "{Reference/Color/Blue/400}"
+        "Light": { "type": "alias", "id": "VariableID:5:20" },
+        "Dark": { "type": "alias", "id": "VariableID:5:18" }
       }
     }
   ],
@@ -44,14 +47,14 @@ Here's an example json dump:
       "paragraphSpacing": 0,
       "paragraphIndent": 0,
       "leadingTrim": "NONE",
-      "lineHeight": "{Reference/Text/Size/#1}",
+      "lineHeight": { "type": "alias", "id": "VariableID:5:181" },
       "textDecoration": "NONE",
-      "fontSize": "{Reference/Text/Size/#1}",
+      "fontSize": { "type": "alias", "id": "VariableID:5:181" },
       "type": "TEXT",
       "fontName": { "family": "Lato", "style": "Light" },
       "letterSpacing": { "unit": "PERCENT", "value": 0 },
-      "fontFamily": "{Reference/Text/Family/Default}",
-      "fontStyle": "{Reference/Text/Weight/Regular}"
+      "fontFamily": { "type": "alias", "id": "VariableID:5:177" },
+      "fontStyle": { "type": "alias", "id": "VariableID:5:180" }
     }
   ],
   "effectStyles": [
@@ -63,18 +66,18 @@ Here's an example json dump:
           "blendMode": "NORMAL",
           "visible": true,
           "spread": 0,
-          "radius": "{Reference/Space/100}",
+          "radius": { "type": "alias", "id": "VariableID:6:307" },
           "type": "DROP_SHADOW",
-          "color": "{Reference/Color/Black/25%}",
+          "color": { "type": "alias", "id": "VariableID:5:167" },
           "offset": { "x": 0, "y": 4 },
-          "offsetY": "{Reference/Space/100}"
+          "offsetY": { "type": "alias", "id": "VariableID:6:307" }
         }
       ]
     }
   ],
   "paintStyles": [
     {
-      "name": "TestPaint",
+      "name": "Test color",
       "paints": [
         {
           "gradientTransform": [
@@ -92,11 +95,11 @@ Here's an example json dump:
   ],
   "gridStyles": [
     {
-      "name": "TestGrid",
+      "name": "Test grid",
       "grids": [
         {
           "pattern": "GRID",
-          "sectionSize": "{Reference/Space/50}",
+          "sectionSize": { "type": "alias", "id": "VariableID:6:306" },
           "visible": true
         },
         { "pattern": "GRID", "sectionSize": 10, "visible": true }

@@ -1,4 +1,4 @@
-import { resolveVariableAlias } from "./resolveVariables";
+import { discriminateVariableValue } from "./resolveVariables";
 
 /**
  * Automatically resolves bound variables in an object.
@@ -22,13 +22,11 @@ export async function resolveBoundObject<T>(
   }
 
   if (source.boundVariables) {
-    await Promise.all(
-      Object.entries(source.boundVariables).map(async ([key, alias]) => {
-        (resolved as Record<string, unknown>)[key] = await resolveVariableAlias(
-          alias as VariableAlias
-        );
-      })
-    );
+    for (const [key, alias] of Object.entries(source.boundVariables)) {
+      (resolved as Record<string, unknown>)[key] = discriminateVariableValue(
+        alias as VariableAlias
+      );
+    }
   }
 
   return resolved;
