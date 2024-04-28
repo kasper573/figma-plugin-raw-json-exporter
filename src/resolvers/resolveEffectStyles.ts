@@ -1,5 +1,5 @@
 import { Serializable } from "../types";
-import { resolveBoundObject } from "./resolveBoundObject";
+import { serializeBoundObject } from "./serializeBoundObject";
 
 export async function resolveEffectStyles(): Promise<ResolvedEffectStyle[]> {
   const textNodes = await figma.getLocalEffectStylesAsync();
@@ -19,7 +19,7 @@ async function resolveEffectStyle({
 function resolveEffect(effect: Effect): Promise<ResolvedEffect> {
   switch (effect.type) {
     case "DROP_SHADOW":
-      return resolveBoundObject<Serializable<DropShadowEffect>>(effect, {
+      return serializeBoundObject<Serializable<DropShadowEffect>>(effect, {
         showShadowBehindNode: null,
         blendMode: null,
         visible: null,
@@ -30,7 +30,7 @@ function resolveEffect(effect: Effect): Promise<ResolvedEffect> {
         offset: null,
       });
     case "INNER_SHADOW":
-      return resolveBoundObject<Serializable<InnerShadowEffect>>(effect, {
+      return serializeBoundObject<Serializable<InnerShadowEffect>>(effect, {
         blendMode: null,
         visible: null,
         spread: null,
@@ -41,7 +41,7 @@ function resolveEffect(effect: Effect): Promise<ResolvedEffect> {
       });
     case "LAYER_BLUR":
     case "BACKGROUND_BLUR":
-      return resolveBoundObject<Serializable<BlurEffect>>(effect, {
+      return serializeBoundObject<Serializable<BlurEffect>>(effect, {
         radius: null,
         type: null,
         visible: null,

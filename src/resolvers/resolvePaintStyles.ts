@@ -1,5 +1,5 @@
 import { Serializable } from "../types";
-import { resolveBoundObject } from "./resolveBoundObject";
+import { serializeBoundObject } from "./serializeBoundObject";
 
 export async function resolvePaintStyles(): Promise<ResolvedPaintStyle[]> {
   const textNodes = await figma.getLocalPaintStylesAsync();
@@ -24,13 +24,13 @@ async function resolvePaint(paint: Paint): Promise<ResolvedPaint> {
     case "GRADIENT_RADIAL": {
       // TODO fix gradient stops, they don't seem to be exporting anything
       const gradientStops = paint.gradientStops.map((stop) =>
-        resolveBoundObject<Serializable<ColorStop>>(stop, {
+        serializeBoundObject<Serializable<ColorStop>>(stop, {
           color: null,
           position: null,
         })
       );
 
-      const resolved = await resolveBoundObject<Serializable<GradientPaint>>(
+      const resolved = await serializeBoundObject<Serializable<GradientPaint>>(
         paint,
         {
           gradientTransform: null,
@@ -44,7 +44,7 @@ async function resolvePaint(paint: Paint): Promise<ResolvedPaint> {
       return { ...resolved, gradientStops } as unknown as ResolvedPaint;
     }
     case "IMAGE":
-      return resolveBoundObject<Serializable<ImagePaint>>(paint, {
+      return serializeBoundObject<Serializable<ImagePaint>>(paint, {
         imageHash: null,
         scaleMode: null,
         type: null,
@@ -56,7 +56,7 @@ async function resolvePaint(paint: Paint): Promise<ResolvedPaint> {
         visible: null,
       });
     case "SOLID":
-      return resolveBoundObject<Serializable<SolidPaint>>(paint, {
+      return serializeBoundObject<Serializable<SolidPaint>>(paint, {
         type: null,
         blendMode: null,
         opacity: null,
@@ -64,7 +64,7 @@ async function resolvePaint(paint: Paint): Promise<ResolvedPaint> {
         color: null,
       });
     case "VIDEO":
-      return resolveBoundObject<Serializable<VideoPaint>>(paint, {
+      return serializeBoundObject<Serializable<VideoPaint>>(paint, {
         scaleMode: null,
         type: null,
         videoHash: null,

@@ -1,3 +1,5 @@
+import { ZodType, z } from "zod";
+
 export async function resolveVariables(): Promise<ResolvedVariable[]> {
   const variables = await figma.variables.getLocalVariablesAsync();
   return Promise.all(variables.map(resolveVariable));
@@ -21,9 +23,9 @@ async function resolveVariable(variable: Variable): Promise<ResolvedVariable> {
   };
 }
 
-export function discriminateVariableValue(
-  value: VariableValue
-): DiscriminatedValue {
+export function discriminateValue(
+  value: unknown
+): DiscriminatedValue | undefined {
   switch (typeof value) {
     case "string":
       return { type: "string", value };
@@ -31,16 +33,51 @@ export function discriminateVariableValue(
       return { type: "number", value };
     case "boolean":
       return { type: "boolean", value };
-    case "object":
-      if ("type" in value) {
-        return { type: "alias", id: value.id };
+    case "object": {
+      const alias = aliasSchema.safeParse(value);
+      if (alias.success) {
+        return { type: "alias", id: alias.data.id };
       }
-      if ("a" in value) {
-        return { type: "rgba", ...value };
+      const rgba = rgbaSchema.safeParse(value);
+      if (rgba.success) {
+        return { type: "rgba", ...rgba.data };
       }
-      return { type: "rgb", ...value };
+      const rgb = rgbSchema.safeParse(value);
+      if (rgb.success) {
+        return { type: "rgb", ...rgb.data };
+      }
+      break;
+    }
   }
 }
+
+export function discriminateVariableValue(
+  value: VariableValue
+): DiscriminatedValue {
+  const discriminated = discriminateValue(value);
+  if (!discriminated) {
+    throw new Error(`Could not discriminate value ${value}`);
+  }
+  return discriminated;
+}
+
+const aliasSchema: ZodType<VariableAlias> = z.object({
+  type: z.literal("VARIABLE_ALIAS"),
+  id: z.string(),
+});
+
+const rgbaSchema: ZodType<RGBA> = z.object({
+  r: z.number(),
+  g: z.number(),
+  b: z.number(),
+  a: z.number(),
+});
+
+const rgbSchema: ZodType<RGB> = z.object({
+  r: z.number(),
+  g: z.number(),
+  b: z.number(),
+});
 
 export type DiscriminatedValue =
   | { type: "alias"; id: VariableAlias["id"] }

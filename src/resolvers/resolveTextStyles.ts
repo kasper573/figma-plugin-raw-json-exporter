@@ -1,5 +1,5 @@
 import { Serializable } from "../types";
-import { resolveBoundObject } from "./resolveBoundObject";
+import { serializeBoundObject } from "./serializeBoundObject";
 
 export async function resolveTextStyles(): Promise<ResolvedTextStyle[]> {
   const textNodes = await figma.getLocalTextStylesAsync();
@@ -7,7 +7,7 @@ export async function resolveTextStyles(): Promise<ResolvedTextStyle[]> {
 }
 
 async function resolveTextStyle(style: TextStyle): Promise<ResolvedTextStyle> {
-  return resolveBoundObject<ResolvedTextStyle>(style, {
+  return serializeBoundObject<ResolvedTextStyle>(style, {
     remote: null,
     description: null,
     name: null,

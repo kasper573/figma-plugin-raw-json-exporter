@@ -1,4 +1,4 @@
-import { discriminateVariableValue } from "./resolveVariables";
+import { DiscriminatedValue, discriminateValue } from "./resolveVariables";
 
 /**
  * Automatically resolves bound variables in an object.
@@ -10,7 +10,7 @@ import { discriminateVariableValue } from "./resolveVariables";
  * This will ensure that we are always resolving all known properties of the object.
  * This makes it easier to maintain if the object structure changes.
  */
-export async function resolveBoundObject<T>(
+export async function serializeBoundObject<T>(
   source: T & { readonly boundVariables?: BoundVariables<T> },
   template: Template<T>
 ): Promise<T> {
@@ -18,12 +18,12 @@ export async function resolveBoundObject<T>(
 
   for (const key of Object.keys(template)) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (resolved as any)[key] = (source as any)[key];
+    (resolved as any)[key] = serializeValue((source as any)[key]);
   }
 
   if (source.boundVariables) {
     for (const [key, alias] of Object.entries(source.boundVariables)) {
-      (resolved as Record<string, unknown>)[key] = discriminateVariableValue(
+      (resolved as Record<string, unknown>)[key] = discriminateValue(
         alias as VariableAlias
       );
     }
@@ -31,6 +31,36 @@ export async function resolveBoundObject<T>(
 
   return resolved;
 }
+
+function serializeValue(value: unknown): SerializedValue {
+  const discriminated = discriminateValue(value);
+  if (discriminated) {
+    return discriminated;
+  }
+
+  if (Array.isArray(value)) {
+    return value.map(serializeValue);
+  }
+
+  if (value === null || value === undefined) {
+    return value;
+  }
+
+  const serializedProperties: SerializedValueRecord = {};
+  for (const [propertyName, propertyValue] of Object.entries(value)) {
+    serializedProperties[propertyName] = serializeValue(propertyValue);
+  }
+  return serializedProperties;
+}
+
+type SerializedValue =
+  | null
+  | undefined
+  | DiscriminatedValue
+  | SerializedValue[]
+  | SerializedValueRecord;
+
+type SerializedValueRecord = { [key: string]: SerializedValue };
 
 type BoundVariables<T> = {
   [K in keyof T]?: VariableAlias;

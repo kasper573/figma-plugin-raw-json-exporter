@@ -1,5 +1,5 @@
 import { Serializable } from "../types";
-import { resolveBoundObject } from "./resolveBoundObject";
+import { serializeBoundObject } from "./serializeBoundObject";
 
 export async function resolveGridStyles(): Promise<ResolvedGridStyle[]> {
   const textNodes = await figma.getLocalGridStylesAsync();
@@ -17,7 +17,7 @@ async function resolveGridStyle({
 }
 
 async function resolveGrid(grid: LayoutGrid): Promise<ResolvedGrid> {
-  return resolveBoundObject<Serializable<LayoutGrid>>(grid, {
+  return serializeBoundObject<Serializable<LayoutGrid>>(grid, {
     alignment: null,
     count: null,
     gutterSize: null,
