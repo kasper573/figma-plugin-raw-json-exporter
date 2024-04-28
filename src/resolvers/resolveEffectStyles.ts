@@ -3,20 +3,20 @@ import { serializeBoundObject } from "./serializeBoundObject";
 
 export async function resolveEffectStyles(): Promise<ResolvedEffectStyle[]> {
   const textNodes = await figma.getLocalEffectStylesAsync();
-  return Promise.all(textNodes.map(resolveEffectStyle));
+  return textNodes.map(resolveEffectStyle);
 }
 
-async function resolveEffectStyle({
+function resolveEffectStyle({
   name,
   effects,
-}: EffectStyle): Promise<ResolvedEffectStyle> {
+}: EffectStyle): ResolvedEffectStyle {
   return {
     name,
-    effects: await Promise.all(effects.map(resolveEffect)),
+    effects: effects.map(resolveEffect),
   };
 }
 
-function resolveEffect(effect: Effect): Promise<ResolvedEffect> {
+function resolveEffect(effect: Effect): ResolvedEffect {
   switch (effect.type) {
     case "DROP_SHADOW":
       return serializeBoundObject<Serializable<DropShadowEffect>>(effect, {

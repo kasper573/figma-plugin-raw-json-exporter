@@ -10,10 +10,10 @@ import { DiscriminatedValue, discriminateValue } from "./resolveVariables";
  * This will ensure that we are always resolving all known properties of the object.
  * This makes it easier to maintain if the object structure changes.
  */
-export async function serializeBoundObject<T>(
+export function serializeBoundObject<T>(
   source: T & { readonly boundVariables?: BoundVariables<T> },
   template: Template<T>
-): Promise<T> {
+): T {
   const resolved = {} as T;
 
   for (const key of Object.keys(template)) {

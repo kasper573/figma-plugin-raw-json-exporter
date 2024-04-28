@@ -3,20 +3,17 @@ import { serializeBoundObject } from "./serializeBoundObject";
 
 export async function resolvePaintStyles(): Promise<ResolvedPaintStyle[]> {
   const textNodes = await figma.getLocalPaintStylesAsync();
-  return Promise.all(textNodes.map(resolvePaintStyle));
+  return textNodes.map(resolvePaintStyle);
 }
 
-async function resolvePaintStyle({
-  name,
-  paints,
-}: PaintStyle): Promise<ResolvedPaintStyle> {
+function resolvePaintStyle({ name, paints }: PaintStyle): ResolvedPaintStyle {
   return {
     name,
-    paints: await Promise.all(paints.map(resolvePaint)),
+    paints: paints.map(resolvePaint),
   };
 }
 
-async function resolvePaint(paint: Paint): Promise<ResolvedPaint> {
+function resolvePaint(paint: Paint): ResolvedPaint {
   switch (paint.type) {
     case "GRADIENT_ANGULAR":
     case "GRADIENT_DIAMOND":
@@ -30,7 +27,7 @@ async function resolvePaint(paint: Paint): Promise<ResolvedPaint> {
         })
       );
 
-      const resolved = await serializeBoundObject<Serializable<GradientPaint>>(
+      const resolved = serializeBoundObject<Serializable<GradientPaint>>(
         paint,
         {
           gradientTransform: null,

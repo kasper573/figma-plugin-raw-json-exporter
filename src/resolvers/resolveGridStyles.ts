@@ -3,20 +3,20 @@ import { serializeBoundObject } from "./serializeBoundObject";
 
 export async function resolveGridStyles(): Promise<ResolvedGridStyle[]> {
   const textNodes = await figma.getLocalGridStylesAsync();
-  return Promise.all(textNodes.map(resolveGridStyle));
+  return textNodes.map(resolveGridStyle);
 }
 
-async function resolveGridStyle({
+function resolveGridStyle({
   name,
   layoutGrids: grids,
-}: GridStyle): Promise<ResolvedGridStyle> {
+}: GridStyle): ResolvedGridStyle {
   return {
     name,
-    grids: await Promise.all(grids.map(resolveGrid)),
+    grids: grids.map(resolveGrid),
   };
 }
 
-async function resolveGrid(grid: LayoutGrid): Promise<ResolvedGrid> {
+function resolveGrid(grid: LayoutGrid): ResolvedGrid {
   return serializeBoundObject<Serializable<LayoutGrid>>(grid, {
     alignment: null,
     count: null,

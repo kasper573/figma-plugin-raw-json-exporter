@@ -7,24 +7,31 @@ export async function resolveTextStyles(): Promise<ResolvedTextStyle[]> {
 }
 
 async function resolveTextStyle(style: TextStyle): Promise<ResolvedTextStyle> {
-  return serializeBoundObject<ResolvedTextStyle>(style, {
-    remote: null,
-    description: null,
-    name: null,
-    textCase: null,
-    hangingList: null,
-    hangingPunctuation: null,
-    listSpacing: null,
-    paragraphSpacing: null,
-    paragraphIndent: null,
-    leadingTrim: null,
-    lineHeight: null,
-    textDecoration: null,
-    fontSize: null,
-    type: null,
-    fontName: null,
-    letterSpacing: null,
-  });
+  const resolved = serializeBoundObject<Omit<ResolvedTextStyle, "name">>(
+    style,
+    {
+      remote: null,
+      description: null,
+      textCase: null,
+      hangingList: null,
+      hangingPunctuation: null,
+      listSpacing: null,
+      paragraphSpacing: null,
+      paragraphIndent: null,
+      leadingTrim: null,
+      lineHeight: null,
+      textDecoration: null,
+      fontSize: null,
+      type: null,
+      fontName: null,
+      letterSpacing: null,
+    }
+  );
+
+  return {
+    ...resolved,
+    name: style.name,
+  };
 }
 
 export type ResolvedTextStyle = Omit<Serializable<TextStyle>, "id" | "key">;
