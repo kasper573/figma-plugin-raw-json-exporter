@@ -2,9 +2,21 @@
 
 Exports figma data as a single json document with as much as possible of the internal figma data structure left as-is. The purpose of this plugin is act as a data dump for further processing externally.
 
-All variable names be set to `<collectionName>/<variableName>`.
+> Designed (but not limited) to be used with https://github.com/kasper573/figma-to-typescript.
 
-All properties bound to a variable in the data set will have its value replaced by a string reference `{<collectionName>/<variableName>}`.
+All values will be discriminated into the following typescript signature based on its type:
+
+```typescript
+type DiscriminatedValue =
+  | { type: "alias"; id: string }
+  | { type: "boolean"; value: boolean }
+  | { type: "string"; value: string }
+  | { type: "number"; value: number }
+  | { type: "rgba", r: number, g: number, b: number, a: number }
+  | { type: "rgb" r: number, g: number, b: number };
+```
+
+All variable bound values (aliases) will be of the `alias` type mentioned above. You can use the id and variables list to look up the aliased value.
 
 Here's an example json dump:
 
