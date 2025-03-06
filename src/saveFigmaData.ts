@@ -1,11 +1,17 @@
+import { AttemptResult } from "./resolvers/attempt";
 import { FigmaData } from "./resolvers/resolveFigmaData";
 
-export function save(data: FigmaData) {
-  return saveFile({
-    filename: "data.json",
-    mimeType: "application/json",
-    content: JSON.stringify(data),
-  });
+export async function save(data: FigmaData): Promise<AttemptResult<void>> {
+  try {
+    await saveFile({
+      filename: "data.json",
+      mimeType: "application/json",
+      content: JSON.stringify(data),
+    });
+    return { type: "success", data: undefined };
+  } catch (e) {
+    return { type: "error", message: String(e) };
+  }
 }
 
 function saveFile(args: Omit<DownloadArgs, "callbackMessage">) {

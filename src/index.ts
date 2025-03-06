@@ -6,11 +6,25 @@ if (figma.command === "export") {
 }
 
 async function exportData() {
-  try {
-    const data = await resolveFigmaData();
-    await save(data);
-    figma.closePlugin("Data exported successfully!");
-  } catch (e) {
-    figma.closePlugin(`An error occurred while exporting data: ${String(e)}`);
+  const resolveResult = await resolveFigmaData();
+  if (resolveResult.type === "error") {
+    figma.closePlugin(
+      `An error occurred while resolving Figma data: ${resolveResult.message}`
+    );
+    return;
   }
+
+  const saveResult = await save(resolveResult.data);
+  if (saveResult.type === "error") {
+    figma.closePlugin(
+      `An error occurred while saving data: ${saveResult.message}`
+    );
+    return;
+  }
+
+  figma.closePlugin(
+    resolveResult.type === "success-with-warnings"
+      ? "Data exported with warnings: " + resolveResult.warnings.join(", \n")
+      : "Data exported successfully."
+  );
 }

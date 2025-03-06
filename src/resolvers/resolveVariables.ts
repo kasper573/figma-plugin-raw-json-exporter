@@ -9,10 +9,16 @@ async function resolveVariable(variable: Variable): Promise<ResolvedVariable> {
   const collection = await requireCollection(variable.variableCollectionId);
 
   const valuesByMode = Object.fromEntries(
-    collection.modes.map((mode) => [
-      mode.name,
-      discriminateVariableValue(variable.valuesByMode[mode.modeId]),
-    ])
+    collection.modes.flatMap((mode) => {
+      const value = variable.valuesByMode[mode.modeId];
+      if (value !== undefined) {
+        return [[mode.name, discriminateVariableValue(value)]];
+      }
+      console.warn(
+        `Variable ${variable.name} does not have a value for mode (id: ${mode.modeId}, name: ${mode.name}).`
+      );
+      return [];
+    })
   );
 
   return {
