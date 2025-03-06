@@ -1,7 +1,7 @@
 {
-  "name": "vanilla-extract-exporter",
+  "name": "figma-plugin-raw-json-exporter",
   "version": "1.0.0",
-  "description": "Exports vanilla extract compatible tokens",
+  "description": "Exports figma data as raw JSON",
   "main": "dist/index.js",
   "scripts": {
     "dev": "npm run build -- --watch",
